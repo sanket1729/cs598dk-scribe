@@ -1,1 +1,8 @@
 .DS_Store
+scribe-template/template.aux
+scribe-template/template.bbl
+scribe-template/template.blg
+scribe-template/template.log
+scribe-template/template.out
+scribe-template/template.pdf
+scribe-template/template.synctex.gz

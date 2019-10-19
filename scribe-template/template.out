@@ -1,5 +1,6 @@
 \BOOKMARK [1][-]{section.1}{Recap}{}% 1
-\BOOKMARK [1][-]{section.2}{Fully Homomorphic Encryption \(FHE\)}{}% 2
-\BOOKMARK [1][-]{section.3}{Construction of Fully Homomorphic Encryption:}{}% 3
-\BOOKMARK [1][-]{section.4}{FHE: Addition operation}{}% 4
-\BOOKMARK [1][-]{section.5}{Towards FHE multiplication}{}% 5
+\BOOKMARK [1][-]{section.2}{Overview of Fully Homomorphic Encryption \(FHE\)}{}% 2
+\BOOKMARK [1][-]{section.3}{Definition of FHE}{}% 3
+\BOOKMARK [1][-]{section.4}{Construction of Fully Homomorphic Encryption:}{}% 4
+\BOOKMARK [1][-]{section.5}{FHE: Addition Operation}{}% 5
+\BOOKMARK [1][-]{section.6}{Towards FHE multiplication}{}% 6
