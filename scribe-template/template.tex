@@ -56,16 +56,15 @@ $e$ should be greater than $f(n)$ asymptotically.
 \end{definition}
 
 Next we present the secret key encryption (SKE) built with LWE which has $m=1$:
-\begin{itemize}
-\item[-] $KeyGen(1^n): \pmb{s}\leftarrow\mathbb{Z}_q^n$
-\item [-] $Enc(\pmb{s},\mu\in\{0,1\}): (\pmb{A}, (\pmb{s}^T\pmb{A}+e+\mu\lfloor\frac{q}{2}\rfloor)\mod q)$
-\begin{itemize}
-\item[*] $\pmb{A}\leftarrow\mathbb{Z}_q^{n\times 1}$
-\item[*] $e\leftarrow\mathcal{X}$
-\end{itemize}†
 
-\item[-]  $Dec(\pmb{s},\pmb{a},b):$ $b-\langle\pmb{s}^T,\pmb{a}\rangle=(e+\mu\lfloor\frac{q}{2}\rfloor) \mod q$
-\end{itemize}
+\begin{align*}
+& KeyGen(1^n): \pmb{s}\leftarrow\mathbb{Z}_q^n\\
+&\underset{\substack{
+\pmb{s}\leftarrow \mathbb{Z}_q^{n\times1}\\
+\pmb{a}\leftarrow\mathbb{Z}_q^{n\times 1}\\
+\pmb{e}\leftarrow \mathcal{X}}}{Enc}(\pmb{s},\mu\in\{0,1\}): (\pmb{a}, b = (\pmb{s}^T\pmb{a}+e+\mu\lfloor\frac{q}{2}\rfloor)\mod q)\\
+&Dec(\pmb{s},\pmb{a},b): b-\langle\pmb{s}^T,\pmb{a}\rangle=(e+\mu\lfloor\frac{q}{2}\rfloor) \mod q
+\end{align*}
 
 LWE can also be used to build public key encryption (PKE):
 \begin{itemize}
