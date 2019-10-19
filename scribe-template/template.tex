@@ -25,6 +25,77 @@
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
 
+More and more computation is being outsourced to public clouds nowadays. However, traditional encryption schemes requires that data must be decrypted before it can be analyzed or manipulated. It would be better the outsourced computation can be done on encrypted data if the encryption has some ``special'' property that having the same effect as firstly computing on meta data and then encrypting it and data privacy is protected. Such property is called homomorphic. In today's lecture, we will see what is fully homomorphic encryption (FHE) scheme and how to build a FHE scheme achieving homomorphic addition and multiplication based on learning with errors (LWE) problems. 
+           
+\section{Recap}
+
+Before stepping into how to build LWE-based FHE schemes, let's briefly recap how to build private and public encryption scheme with LWE problem.
+
+\begin{definition}
+\textbf{\textit{Decisional LWE$_{n,m,q,\mathcal{X}}$}}
+
+For all non-uniform probabilistic polynomial time adversary $\mathcal{A}$
+$$|\underset{\substack{
+\pmb{s}\leftarrow \mathbb{Z}_q^{n\times1}\\
+\pmb{A}\leftarrow\mathbb{Z}_q^{n\times m}\\
+\pmb{e}\leftarrow \mathcal{X}^m}}{Pr}
+[\mathcal{A}(\pmb{A},\pmb{s}^T\pmb{A}+\pmb{e}^T)=1]
+-\underset{\substack{\pmb{A}\leftarrow\mathbb{Z}_q^{n\times m}\\
+\pmb{b}\leftarrow\mathbb{Z}_q^m}}{Pr} 
+[\mathcal{A}(\pmb{A},\pmb{b})=1]|=negl(n)$$
+where $q$ is a prime within $O(2^n)$, $m=O(n\log q)$ and norm $\parallel \pmb{e}\parallel=\omega(\log n)$.
+\end{definition}
+
+Next we present the secret key encryption (SKE) built with LWE which has $m=1$:
+\begin{itemize}
+\item $KeyGen(1^n): \pmb{s}\leftarrow\mathbb{Z}_q^n$
+\item $Enc(\pmb{s},\mu\in\{0,1\}): (\pmb{A}, (\pmb{s}^T\pmb{A}+e+\mu\lfloor\frac{q}{2}\rfloor)\mod q)$
+\begin{itemize}
+\item[*] $\pmb{A}\leftarrow\mathbb{Z}_q^{n\times 1}$
+\item[*] $e\leftarrow\mathcal{X}$
+\end{itemize}†
+
+\item $Dec(\pmb{s},\pmb{a},b):$ $b-\langle\pmb{s}^T,\pmb{a}\rangle=(e+\mu\lfloor\frac{q}{2}\rfloor) \mod q$
+\end{itemize}
+
+LWE can also be used to build public key encryption (PKE):
+\begin{itemize}
+\item \item $KeyGen(1^n): (sk=\pmb{s},pk=(\pmb{A}, \pmb{b}^T=\pmb{s}^T\pmb{A}+\pmb{e}^T))$
+\begin{itemize}
+\item[*]  $\pmb{s}\leftarrow\mathbb{Z}_q^n$
+\item[*] $\pmb{A}\leftarrow\mathbb{Z}_q^{n\times m}$
+\item[*] $\pmb{e}\leftarrow\mathcal{X}^m$
+\end{itemize}
+
+\item $Enc(pk,\mu\in\{0,1\}): (\pmb{c_1}=\pmb{A}\pmb{r}, c_2=(\pmb{b}^T\pmb{r}+\mu\lfloor\frac{q}{2}\rfloor)\mod q)$
+\begin{itemize}
+\item[*]  $\pmb{r}\longleftarrow\{0,1\}^m$
+\end{itemize}
+
+\item $Dec(sk,(\pmb{c_1},c_2)): c_2-\pmb{s}^T\pmb{c_1}=\pmb{e}^T\pmb{r}+\mu\lfloor\frac{q}{2}\rfloor$
+\end{itemize}
+
+
+\section{Fully Homomorphic Encryption (FHE)}
+
+Let us consider the scenario shown in \ref{com}. A client has a secret value $x$. The client wants the server do some computation on $x$ without revealing what $x$ is. Firstly, a ciphertext $ct=Enc(x)$ is sent to the server along with the desired function $f$. Then the server could compute a new ciphertext $ct^*=Enc(f(x))$ by evaluating $x$ on another function $g$ which is publicly computable from $f$. After receiving $ct^*$ from the server, the client can use its secret key $sk$ to get the desired result of $f(x)$.
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{client-server}
+\end{center}
+\caption{Outsourced Computation}
+\label{fig:com}
+\end{figure}
+
+A homomorphic encryption  can be used for privacy-preserving outsourced storage and computation. It allows operations and analysis on encrypted data without revealing the original one, which removes the privacy barriers in several real-life applications.
+
+\begin{definition} Let $\mathcal{C}$ be a class of circuits where for each $f\in\mathcal{C}$, $f:\{0,1\}^n \rightarrow \{0,1\}$. An encryption scheme $(KeyGen, Enc, Dec, Eval)$ is \textbf{$\mathcal{C}$-homomorphic} if $\forall f\in \mathcal{C}$, all ciphertexts $ct_1, \dots, ct_n$, $Eval(f, ct_1,\dots,ct_n)=ct^*$ such that if  $\forall i$, $\exists m_i, r_i$ s.t. $ct_i=Enc(m_i;r_i)$, then $Dec_{sk}(ct^*)=f(m_1,\dots,m_n)$ and the scheme is IND-CPA secure.
+\end{definition}
+At a high level, given ciphertexts $ct_1,\dots,ct_n$ that encrypt $m_1,\dots,m_n$, FHE should allow anyone to output a ciphertext  $ct^*$ that encrypts $f(m_1,\dots,m_n)$ for any desired function $f$ by evaluating another function $g$ which is publicly computable from $f$. Thus, the key holder could use the secret key $sk$ to decrypt $ct^*$ and get the result of $f(m_1,\dots,m_n)$. 
+
+Note that each function $f:\{0,1\}^n\rightarrow\{0,1\}^k$ can be split into $f_1,\dots,f_k$ where $\forall i$, $f_i:\{0,1\}^n\rightarrow\{0,1\}$ and also we can generalized the definition by regulating the input length of circuits in $\mathcal{C}$ from $n$ to $poly(n)$.
+
 \section{Construction of Fully Homomorphic Encryption:}
 As described previousy, FHE is an ecryption scheme(Gen, Enc, Dec) 
 with an additional algorithm called Eval. In particular, we want to construct 
@@ -90,7 +161,7 @@ $$c_{add} = c_1 + c_2 = ( A(r_1 + r_2), b(r_1 +r_2) + (\mu_1 + \mu_2)\floor{\fra
 
 On the basis of the similar argument described above, the error of the equations for 1 addition be 
 constrained by $e_i \leq \frac{q}{2^{k+1}}$.
-\end{corollary}
+\	end{corollary}
 \begin{remark}
 It is also possible to implement a similar addition for the private key ecryption part scheme 
 using LWE. That is, adding two ciphertexts $c_1$ and $c_2$ corresponding to $\mu_1$ and $\mu_2$
