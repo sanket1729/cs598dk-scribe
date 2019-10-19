@@ -25,16 +25,22 @@
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
 
-More and more computation is being outsourced to public clouds nowadays. However, traditional encryption schemes requires that data must be decrypted before it can be analyzed or manipulated. It would be better the outsourced computation can be done on encrypted data if the encryption has some ``special'' property that having the same effect as firstly computing on meta data and then encrypting it and data privacy is protected. Such property is called homomorphic. In today's lecture, we will see what is fully homomorphic encryption (FHE) scheme and how to build a FHE scheme achieving homomorphic addition and multiplication based on learning with errors (LWE) problems. 
+Informally, a cryptosystem that supports arbitrary computation on ciphertexts is known as fully homomorphic encryption (FHE)\cite{wiki}. Throughout the course, we have studied encryption schemes for the purpose of information transfer from other party to the other. However, if we were to compute on data using our traditional encryption schemes, it would require that data must be decrypted before it can be analyzed or manipulated. It would be great if we can outsource the computation while keeping the data encrypted. That is, it should be possible to compute a known function on encrupted data without having access to the secret key. 
+
+Such a FHE scheme can be used for privacy-preserving outsourced storage and computation. In today's lecture, we will see what is fully homomorphic encryption (FHE) scheme and how to build a FHE scheme achieving homomorphism. We will also look at intuitive ways to construct FHE for addition and multiplication.
+
+\begin{fact}
+LWE is the only way we know to do an fully homomorphic encryption as of Oct 2019. 
+\end{fact}
            
 \section{Recap}
 
 Before stepping into how to build LWE-based FHE schemes, let's briefly recap how to build private and public encryption scheme with LWE problem.
-
+Desisional LWE is the problem where given a matrix $A_{n,m}$, and a corresponding LWE vector result $b_m$, determining whether or not these 
+and results vector of some instance of an LWE problem OR whether the vector $b_m$ was simply 
+drawn from sampling values uniformly randomly from $Z^{m}_{q}$. 
 \begin{definition}
-\textbf{\textit{Decisional LWE$_{n,m,q,\mathcal{X}}$}}
-
-For all non-uniform probabilistic polynomial time adversary $\mathcal{A}$
+\textbf{\textit{Decisional $LWE{n,m,q,\mathcal{X}}$}} : For all non-uniform probabilistic polynomial time adversary $\mathcal{A}$
 $$|\underset{\substack{
 \pmb{s}\leftarrow \mathbb{Z}_q^{n\times1}\\
 \pmb{A}\leftarrow\mathbb{Z}_q^{n\times m}\\
@@ -43,20 +49,20 @@ $$|\underset{\substack{
 -\underset{\substack{\pmb{A}\leftarrow\mathbb{Z}_q^{n\times m}\\
 \pmb{b}\leftarrow\mathbb{Z}_q^m}}{Pr} 
 [\mathcal{A}(\pmb{A},\pmb{b})=1]|=negl(n)$$
-where $q$ is a prime within $O(2^n)$, $m=O(n\log q)$ and norm $\parallel \pmb{e}\parallel=\omega(\log n)$.
+where $q$ is a prime within $O(2^n)$, $m=O(n\log q)$ and norm $\parallel \pmb{e}\parallel=\omega(\log n)$. Where $\omega(f(n))$ means that 
+$e$ should be greater than $f(n)$ assymptotically.
 \end{definition}
 
-Next we present the secret key encryption (SKE) built with LWE which has $m=1$:
-\begin{itemize}
-\item $KeyGen(1^n): \pmb{s}\leftarrow\mathbb{Z}_q^n$
-\item $Enc(\pmb{s},\mu\in\{0,1\}): (\pmb{A}, (\pmb{s}^T\pmb{A}+e+\mu\lfloor\frac{q}{2}\rfloor)\mod q)$
-\begin{itemize}
-\item[*] $\pmb{A}\leftarrow\mathbb{Z}_q^{n\times 1}$
-\item[*] $e\leftarrow\mathcal{X}$
-\end{itemize}†
+Next we revise the secret key encryption (SKE) built with LWE which has $m=1$:
 
-\item $Dec(\pmb{s},\pmb{a},b):$ $b-\langle\pmb{s}^T,\pmb{a}\rangle=(e+\mu\lfloor\frac{q}{2}\rfloor) \mod q$
-\end{itemize}
+$$KeyGen(1^n): \pmb{s}\leftarrow\mathbb{Z}_q^n$$
+$$\underset{\substack{
+\pmb{s}\leftarrow \mathbb{Z}_q^{n\times1}\\
+\pmb{a}\leftarrow\mathbb{Z}_q^{n\times 1}\\
+\pmb{e}\leftarrow \mathcal{X}}}{Enc}(\pmb{s},\mu\in\{0,1\}): (\pmb{a}, (b = \pmb{s}^T\pmb{a}+e+\mu\lfloor\frac{q}{2}\rfloor)\mod q)$$
+
+
+$$Dec(\pmb{s},\pmb{a},b): b-\langle\pmb{s}^T,\pmb{a}\rangle=(e+\mu\lfloor\frac{q}{2}\rfloor) \mod q$$
 
 LWE can also be used to build public key encryption (PKE):
 \begin{itemize}
