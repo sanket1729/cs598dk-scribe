@@ -16,7 +16,7 @@
 
 \begin{document}
 
-
+	
 \makeheader{Sanket Kanjalkar, Yunqi Li}                              % your name
            {October 09, 2019}                          % lecture date
            {11}                                       % lecture number
@@ -82,7 +82,7 @@ Let us consider the scenario shown in \ref{com}. A client has a secret value $x$
 
 \begin{figure}[!htbp]
 \begin{center}
-\includegraphics[width=0.9\textwidth]{client-server}
+\includegraphics[width=0.9\textwidth]{client-server.pdf}
 \end{center}
 \caption{Outsourced Computation}
 \label{fig:com}
@@ -161,7 +161,7 @@ $$c_{add} = c_1 + c_2 = ( A(r_1 + r_2), b(r_1 +r_2) + (\mu_1 + \mu_2)\floor{\fra
 
 On the basis of the similar argument described above, the error of the equations for 1 addition be 
 constrained by $e_i \leq \frac{q}{2^{k+1}}$.
-\	end{corollary}
+\end{corollary}
 \begin{remark}
 It is also possible to implement a similar addition for the private key ecryption part scheme 
 using LWE. That is, adding two ciphertexts $c_1$ and $c_2$ corresponding to $\mu_1$ and $\mu_2$
@@ -174,27 +174,6 @@ and addition operations.
 \end{remark}
 
 \section{Towards FHE multiplication}
-
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.4\textwidth]{triangle-circle}
-\end{center}
-\caption{A triangle and a circle.}
-\label{fig:triangle-circle}
-\end{figure}
-
-
-
-\section{Mathematical environments}
-
-For your convenience, the scribe note style file comes
-with the following mathematical environments
-predefined: theorem, lemma, corollary, proposition,
-fact, claim, definition, example, assumption, remark,
-conjecture, open problem, problem. The environments are
-illustrated below.  Please limit yourself to these
-environments.
 
 \begin{theorem}
 Statement here 
@@ -250,12 +229,6 @@ Statement here
 
 
 \noindent
-Note that \LaTeX\ automatically numbers these
-environments within the lecture number (\thelecture\ in
-this case).  The same applies to the numbering of pages
-(this page being page \thepage), figures
-(Figure~\ref{fig:triangle-circle} above), and
-equations:
 \begin{align}
 a = a_1+a_2+\cdots+a_n.
 \end{align}
