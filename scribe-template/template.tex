@@ -62,7 +62,11 @@ $$\underset{\substack{
 \pmb{e}\leftarrow \mathcal{X}}}{Enc}(\pmb{s},\mu\in\{0,1\}): (\pmb{a}, (b = \pmb{s}^T\pmb{a}+e+\mu\lfloor\frac{q}{2}\rfloor)\mod q)$$
 
 
-$$Dec(\pmb{s},\pmb{a},b): b-\langle\pmb{s}^T,\pmb{a}\rangle=(e+\mu\lfloor\frac{q}{2}\rfloor) \mod q$$
+$$Dec(\pmb{s},\pmb{a},b): b-\langle\pmb{s}^T,\pmb{a}\rangle=(e+\mu\lfloor\frac{q}{2}\rfloor) \mod q =   
+  \begin{cases}
+    (0 + 1)* & \text{if $P = \mathit{NP}$} \\
+    \emptyset & \text{otherwise}
+  \end{cases}$$
 
 LWE can also be used to build public key encryption (PKE):
 \begin{itemize}
