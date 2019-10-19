@@ -1,8 +1,9 @@
 \begin{thebibliography}{1}
 
-\bibitem{textbook}
-E.~Kushilevitz and N.~Nisan.
-\newblock {\em Communication complexity}.
-\newblock Cambridge University Press, 2nd edition, 2006.
+\bibitem{rothblum2011homomorphic}
+R.~Rothblum.
+\newblock Homomorphic encryption: From private-key to public-key.
+\newblock In {\em Theory of cryptography conference}, pages 219--234. Springer,
+  2011.
 
 \end{thebibliography}
