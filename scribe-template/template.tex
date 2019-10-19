@@ -64,9 +64,10 @@ $$\underset{\substack{
 
 $$Dec(\pmb{s},\pmb{a},b): b-\langle\pmb{s}^T,\pmb{a}\rangle=(e+\mu\lfloor\frac{q}{2}\rfloor) \mod q =   
   \begin{cases}
-    (0 + 1)* & \text{if $P = \mathit{NP}$} \\
-    \emptyset & \text{otherwise}
+    0 & \text{if $b - \pmb{s}^T\pmb{a}$} mod q \in [\frac{-q}{4} \frac{q}{4} ] \\% - \pmb{s}^T\pmb{a} mod q  \[\floor{-q}{4} \floor{q}{4}\]$} \\
+    1 & \text{if $b - \pmb{s}^T\pmb{a}$} mod q \in [\frac{q}{4} \frac{3q}{4} ]%  \[\floor{q}{4} \floor{3*q}{4}\]$}
   \end{cases}$$
+  
 
 LWE can also be used to build public key encryption (PKE):
 \begin{itemize}
