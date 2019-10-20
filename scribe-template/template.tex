@@ -99,15 +99,18 @@ We also recall that parameters $e$, $\pmb{e}$ in both of the schemes above are n
 \end{remark}
 
 \section{Fully Homomorphic Encryption (FHE)}
+Fully Homomorphic Encryption refers to an extension of Encryption scheme with additional keywords \texttt{Fully} and \texttt{Homomorphic}.
+\texttt{Homomorphic} in FHE refers to homomorphism in mathematics: the encryption and decryption functions can be thought of as homomorphisms between plaintext and ciphertext domains. \texttt{Fully} refers to the fact that we can evalute any function. There is another variant called \texttt{Levelled} Homomorphic encryptions where we restrict ourselves to evaluating only functions with certain complexity(depth). 
 
-Let us consider the scenario shown in \ref{com}. A client has a secret value $x$. The client wants the server do some computation on $x$ without revealing what $x$ is. Firstly, a ciphertext $ct=Enc(x)$ is sent to the server along with the desired function $f$. Then the server could compute a new ciphertext $ct^*=Enc(f(x))$ by evaluating $x$ on another function $g$ which is publicly computable from $f$. After receiving $ct^*$ from the server, the client can use its secret key $sk$ to get the desired result of $f(x)$.
+Let us consider the scenario shown in \ref{com}. A client has a secret value $x$. The client wants the server do some computation on $x$ without revealing what $x$ is. Firstly, a ciphertext $ct=Enc(x)$ is sent to the server along with the desired function $f$. Then the server could compute a new ciphertext $ct^*=Enc(f(x))$ by evaluating $x$ on another function $g$ which is publicly computable from $f$. After receiving $ct^*$ from the server, the client can use its secret key $sk$ to get the desired result of $f(x)$. Note that in the following example, the server learns the function $f$ so it is aware of what computation is taking place, but cannot figure the values underneath. 
+
 
 \begin{figure}[!htbp]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{client-server.pdf}
 \end{center}
 \caption{Outsourced Computation}
-\label{fig:com}
+\label{com}
 \end{figure}
 
 A homomorphic encryption  can be used for privacy-preserving outsourced storage and computation. It allows operations and analysis on encrypted data without revealing the original one, which removes the privacy barriers in several real-life applications.
@@ -117,6 +120,11 @@ A homomorphic encryption  can be used for privacy-preserving outsourced storage 
 At a high level, given ciphertexts $ct_1,\dots,ct_n$ that encrypt $m_1,\dots,m_n$, FHE should allow anyone to output a ciphertext  $ct^*$ that encrypts $f(m_1,\dots,m_n)$ for any desired function $f$ by evaluating another function $g$ which is publicly computable from $f$. Thus, the key holder could use the secret key $sk$ to decrypt $ct^*$ and get the result of $f(m_1,\dots,m_n)$. 
 
 Note that each function $f:\{0,1\}^n\rightarrow\{0,1\}^k$ can be split into $f_1,\dots,f_k$ where $\forall i$, $f_i:\{0,1\}^n\rightarrow\{0,1\}$ and also we can generalized the definition by regulating the input length of circuits in $\mathcal{C}$ from $n$ to $poly(n)$.
+
+\begin{remark}
+	In the Leveled homomorphic setting, it is possible to hide the function $f$ being evaluated under a Universal function evalutor. That is if we know the bound of the number of gates and depth of the circuits being evaluted, we can use the function $f$ as a argument to another universal function evaluator.
+	$$Eval(U, f, args) = f(args)$$
+\end{end}
 
 \section{Construction of Fully Homomorphic Encryption:}
 As described previously, FHE is an encryption scheme $(KeyGen, Enc, Dec)$ 
