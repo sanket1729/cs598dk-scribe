@@ -150,10 +150,18 @@ An arithmetic circuit over a field $\mathbb{Z}_q$ is a directed
 acyclic graph whose vertices are called gates. Gates of incoming degree $0$ are inputs to
 the circuit. All other gates are labeled $+$ or $x$. 
 \end{definition}
-We usually consider arithmetic circuits with fan-in $2$, in which case all of the $+$ and $\times$ gates have in-degree $2$.
+We usually consider arithmetic circuits with fan-in $2$, in which case all of the $+$ and $\times$ gates have in-degree $2$. The figure \ref{ac} shows such a arithematic circuit.
 
 Let us start with the simplest possible way to build an FHE for the addition operation. 
 For simplicity, let us consider that we want to single-bit numbers and output a single bit number. This is equivalent to implementing the XOR operation. 
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics[width=0.2\textwidth]{circuit.png}
+\end{center}
+\caption{Arithematic circuit}
+\label{ac}
+\end{figure}
 
 \section{FHE: Addition Operation}
 
@@ -224,7 +232,7 @@ Again, we ask the reader to look over the fact that the dimensions in this syste
 \begin{problem}
     Applying the decryption step does not result in something clean which can be easily decrypted directly.
 \end{problem}
-Intuitively, we can see that the problem is there because decrypting the first term does not get rid of the noise directly. We are going investigate this problem deeper into the next lecture, but the high-level idea is to transform a ciphertext $c_2$ with an operation $G^{-1}(c_2)$ before multiplying it with $c_1$. This transformation must ensure that the values of $G^{-1}(c_2)$ are small so that the error is contained, but also must preserve the correctness of the scheme.
+Intuitively, we can see that the problem is there because decrypting the first term does not get rid of the noise directly. We are going to investigate this problem deeper into the next lecture, but the high level idea is that if we naively multiply the ciphertexts and try to decrypt them, we are not able to reason about the noise. Following is a high level idead of how to fix it, but the high-level idea is to transform a ciphertext $c_2$ with an operation $G^{-1}(c_2)$ before multiplying it with $c_1$. This transformation must ensure that the values of $G^{-1}(c_2)$ are small so that the error is contained, but also must preserve the correctness of the scheme. There our final scheme would be $c_{mult} = c_1 * G^{-1}(c_2)$. 
 
 \section*{Acknowledgement}
 These scribe notes were prepared by editing a light modification of the template designed by Alexander Sherstov.
