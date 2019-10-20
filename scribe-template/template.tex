@@ -62,7 +62,7 @@ $e$ should be greater than $f(n)$ asymptotically.
 \end{definition}
 
 
-Next, we revise the secret key encryption (SKE) built with LWE which has $m=1$. The secret key here is a vector $\pmb{s} \in \mathbb{Z}_q^n$. We refer to the previous lecture for the definition of SKE and only give an instantiation of one using LWE.
+Next, we revise the secret key encryption (SKE) built with LWE which has $m=1$. The secret key here is a vector $\pmb{s} \in \mathbb{Z}_q^n$. We refer to the previous lecture\cite{lec5} for the definition of SKE and only give an instantiation of one using LWE.
 
 $$KeyGen(1^n): \pmb{s}\leftarrow\mathbb{Z}_q^n$$
 $$\underset{\substack{
@@ -78,7 +78,7 @@ $$Dec(\pmb{s},\pmb{a},b): b-\langle\pmb{s}^T,\pmb{a}\rangle=(e+\mu\lfloor\frac{q
   \end{cases}$$
   
 
-LWE can also be used to build public key encryption(PKE) with public key $pk = (\pmb{A}, \pmb{b}^T=\pmb{s}^T\pmb{A}+\pmb{e}^T))$ and secret key $sk$. Just as before, interested reader can look at the definition of PKE in  and here we only an instantiation of the scheme using LWE.
+LWE can also be used to build public key encryption(PKE) with public key $pk = (\pmb{A}, \pmb{b}^T=\pmb{s}^T\pmb{A}+\pmb{e}^T))$ and secret key $sk$. Just as before, interested reader can look at the definition of PKE\cite{lec5}, buthere we only an instantiation of the scheme using LWE.
 $$\underset{\substack{
 \pmb{A}\leftarrow\mathbb{Z}_q^{n\times m}\\
 \pmb{a}\leftarrow\mathbb{Z}_q^{n\times 1}\\
@@ -123,7 +123,10 @@ Even though the Fully Homomorphic encryption scheme is our actual goal, in pract
 
 FHE allows operations and analysis of encrypted data without revealing the original one, which removes the privacy barriers in several real-life applications. 
 
-\begin{definition} Let $\mathcal{C}$ be a class of circuits where for each $f\in\mathcal{C}$, $f:\{0,1\}^n \rightarrow \{0,1\}$. An encryption scheme $(KeyGen, Enc, Dec, Eval)$ is \textbf{$\mathcal{C}$-homomorphic} if $\forall f\in \mathcal{C}$, all ciphertexts $ct_1, \dots, ct_n$, $Eval(f, ct_1,\dots,ct_n)=ct^*$ such that if  $\forall i$, $\exists m_i, r_i$ s.t. $ct_i=Enc(m_i;r_i)$, then $Dec_{sk}(ct^*)=f(m_1,\dots,m_n)$ and the scheme is IND-CPA secure.
+\begin{definition} Let $\mathcal{C}$ be a class of circuits where for each $f\in\mathcal{C}$, $f:\{0,1\}^n \rightarrow \{0,1\}$. An encryption scheme $(KeyGen, Enc, Dec, Eval)$ is \textbf{$\mathcal{C}$-homomorphic} if $\forall f\in \mathcal{C}$, all ciphertexts $ct_1, \dots, ct_n$, $Eval(f, ct_1,\dots,ct_n)=ct^*$ such that if  $\forall i$, $\exists m_i, r_i$ s.t. $ct_i=Enc(m_i;r_i)$, then $Dec_{sk}(ct^*)=f(m_1,\dots,m_n)$ and the Encyption scheme$(Gen, Enc, Eval)$ is IND-CPA secure.
+\end{definition}
+
+\begin{definition} We say that an encryption scheme $(KeyGen, Enc, Dec, Eval)$ is fully homomorphic if it is \textbf{$\mathcal{C}$-homomorphic} $\forall \mathcal{C}$. 
 \end{definition}
 At a high level, given ciphertexts $ct_1,\dots,ct_n$ that encrypt $m_1,\dots,m_n$, FHE should allow anyone to output a ciphertext  $ct^*$ that encrypts $f(m_1,\dots,m_n)$ for any desired function $f$ by evaluating another function $g$ which is publicly computable from $f$. Thus, the key holder could use the secret key $sk$ to decrypt $ct^*$ and get the result of $f(m_1,\dots,m_n)$. 
 
@@ -148,7 +151,7 @@ of only addition and multiplication gates. Therefore, we only implement our FHE 
 \begin{definition}
 An arithmetic circuit over a field $\mathbb{Z}_q$ is a directed
 acyclic graph whose vertices are called gates. Gates of incoming degree $0$ are inputs to
-the circuit. All other gates are labeled $+$ or $x$. 
+the circuit. All other gates are labeled $+$ or $\times$. 
 \end{definition}
 We usually consider arithmetic circuits with fan-in $2$, in which case all of the $+$ and $\times$ gates have in-degree $2$. The figure \ref{ac} shows such a arithematic circuit.
 

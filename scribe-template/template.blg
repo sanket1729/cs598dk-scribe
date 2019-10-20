@@ -1,49 +1,53 @@
-This is BibTeX, Version 0.99d (TeX Live 2017)
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
 Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: template.aux
 The style file: abbrv.bst
 Database file #1: template.bib
+Warning--to sort, need author or key in lec5
+Warning--empty author in lec5
+Warning--empty journal in lec5
+Warning--empty year in lec5
 Warning--empty publisher in wiki
 Warning--empty year in wiki
-You've used 5 entries,
+You've used 6 entries,
             2118 wiz_defined-function locations,
-            525 strings with 4234 characters,
-and the built_in function-call counts, 1438 in all, are:
-= -- 144
-> -- 41
+            527 strings with 4283 characters,
+and the built_in function-call counts, 1597 in all, are:
+= -- 157
+> -- 42
 < -- 1
-+ -- 18
++ -- 19
 - -- 12
-* -- 84
-:= -- 240
-add.period$ -- 15
-call.type$ -- 5
-change.case$ -- 20
+* -- 98
+:= -- 259
+add.period$ -- 16
+call.type$ -- 6
+change.case$ -- 23
 chr.to.int$ -- 0
-cite$ -- 7
-duplicate$ -- 67
-empty$ -- 129
+cite$ -- 12
+duplicate$ -- 77
+empty$ -- 147
 format.name$ -- 12
-if$ -- 306
+if$ -- 339
 int.to.chr$ -- 0
-int.to.str$ -- 5
-missing$ -- 6
-newline$ -- 27
+int.to.str$ -- 6
+missing$ -- 7
+newline$ -- 30
 num.names$ -- 10
-pop$ -- 25
+pop$ -- 33
 preamble$ -- 1
-purify$ -- 16
+purify$ -- 18
 quote$ -- 0
-skip$ -- 46
+skip$ -- 52
 stack$ -- 0
-substring$ -- 89
+substring$ -- 94
 swap$ -- 15
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 18
-warning$ -- 2
+type$ -- 22
+warning$ -- 6
 while$ -- 16
-width$ -- 6
-write$ -- 54
-(There were 2 warnings)
+width$ -- 7
+write$ -- 59
+(There were 6 warnings)
