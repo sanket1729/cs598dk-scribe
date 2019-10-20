@@ -37,15 +37,14 @@ LWE is the only way we know to do fully homomorphic encryption as of Sept 2019.
 
 We provide a quick primer on the notation used in this section. 
 \begin{itemize}
-    \item All values which are bolded like $\pmb{s}, \pmb{a}$ are vectors where bolded $\pmb{A}$ is a matrix.
+    \item All values which are bolded like $\pmb{s}, \pmb{a}$ are vectors where bolded Captial $\pmb{A}$ is a matrix.
     \item All values which in simple like $q, e$ are scalars. All scalars apart from field modulas $q$ are in field $Z_q$.
     \item The values $\pmb{a}, \pmb{A}$ are public value seen by all parties, \pmb{s} is secret value and $e$, $\pmb{e}$ are errors
 \end{itemize}
 
 
 Before stepping into how to build LWE-based FHE schemes, let's briefly recap how to build a private and public encryption scheme with the LWE problem.
-Desisional LWE is the problem where given a matrix $A_{n,m}$, and a corresponding LWE vector result $b_m$, determining whether or not these 
-and results vector of some instance of an LWE problem OR whether the vector $b_m$ was simply 
+Desisional LWE is the problem where given a matrix $A_{n,m}$, and a vector $b_m$, determining whether or not these are results vector of some instance of an LWE problem OR whether the vector $b_m$ was simply 
 drawn from sampling values uniformly randomly from $Z^{m}_{q}$. 
 \begin{definition}
 \textbf{\textit{Decisional $LWE{n,m,q,\mathcal{X}}$}} : For all non-uniform probabilistic polynomial time adversary $\mathcal{A}$
@@ -62,7 +61,7 @@ $e$ should be greater than $f(n)$ assymptotically.
 \end{definition}
 
 
-Next, we revise the secret key encryption (SKE) built with LWE which has $m=1$ and secret key $\pmb{s}$. We refer to the previous lecture for the definition of SKE and only give an instantiation of one using LWE.
+Next, we revise the secret key encryption (SKE) built with LWE which has $m=1$. The secret key here is a vector $\pmb{s} \in \mathbb{Z}_q^n$. We refer to the previous lecture for the definition of SKE and only give an instantiation of one using LWE.
 
 $$KeyGen(1^n): \pmb{s}\leftarrow\mathbb{Z}_q^n$$
 $$\underset{\substack{
