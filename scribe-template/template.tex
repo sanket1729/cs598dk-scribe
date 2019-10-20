@@ -44,7 +44,7 @@ We provide a quick primer on the notation used in this section.
 
 
 Before stepping into how to build LWE-based FHE schemes, let's briefly recap how to build a private and public encryption scheme\cite{goldwasser1996lecture} with the LWE problem.
-Desisional LWE is the problem where given a matrix $A_{n,m}$, and a corresponding LWE vector result $b_m$, determining whether or not these 
+Decisional LWE is the problem where given a matrix $A_{n,m}$, and a corresponding LWE vector result $b_m$, determining whether or not these 
 and results vector of some instance of an LWE problem OR whether the vector $b_m$ was simply 
 drawn from sampling values uniformly randomly from $Z^{m}_{q}$. 
 \begin{definition}
@@ -58,7 +58,7 @@ $$|\underset{\substack{
 \pmb{b}\leftarrow\mathbb{Z}_q^m}}{Pr} 
 [\mathcal{A}(\pmb{A},\pmb{b})=1]|=negl(n)$$
 where $q$ is a prime within $O(2^n)$, $m=O(n\log q)$\cite{regev2010learning} and norm $\parallel \pmb{e}\parallel=\omega(\log n)$. Where $\omega(f(n))$ means that 
-$e$ should be greater than $f(n)$ assymptotically.
+$e$ should be greater than $f(n)$ asymptotically.
 \end{definition}
 
 
@@ -121,7 +121,7 @@ Even though the Fully Homomorphic encryption scheme is our actual goal, in pract
 \label{com}
 \end{figure}
 
- FHE allows operations and analysis of encrypted data without revealing the original one, which removes the privacy barriers in several real-life applications. 
+FHE allows operations and analysis of encrypted data without revealing the original one, which removes the privacy barriers in several real-life applications. 
 
 \begin{definition} Let $\mathcal{C}$ be a class of circuits where for each $f\in\mathcal{C}$, $f:\{0,1\}^n \rightarrow \{0,1\}$. An encryption scheme $(KeyGen, Enc, Dec, Eval)$ is \textbf{$\mathcal{C}$-homomorphic} if $\forall f\in \mathcal{C}$, all ciphertexts $ct_1, \dots, ct_n$, $Eval(f, ct_1,\dots,ct_n)=ct^*$ such that if  $\forall i$, $\exists m_i, r_i$ s.t. $ct_i=Enc(m_i;r_i)$, then $Dec_{sk}(ct^*)=f(m_1,\dots,m_n)$ and the scheme is IND-CPA secure.
 \end{definition}
