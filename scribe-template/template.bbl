@@ -1,8 +1,29 @@
 \begin{thebibliography}{1}
 
+\bibitem{goldwasser1996lecture}
+S.~Goldwasser and M.~Bellare.
+\newblock Lecture notes on cryptography.
+\newblock {\em Summer course “Cryptography and computer security” at MIT},
+  1999:1999, 1996.
+
+\bibitem{regev2010learning}
+O.~Regev.
+\newblock The learning with errors problem.
+\newblock {\em Invited survey in CCC}, 7, 2010.
+
+\bibitem{rothblum2011homomorphic}
+R.~Rothblum.
+\newblock Homomorphic encryption: From private-key to public-key.
+\newblock In {\em Theory of cryptography conference}, pages 219--234. Springer,
+  2011.
+
 \bibitem{wiki}
 Wikipedia.
 \newblock {\em Fully Homomorphic Encryption}.
-\newblock Cambridge University Press, 2nd edition, 2006.
+
+\bibitem{wu2015fully}
+D.~J. Wu.
+\newblock Fully homomorphic encryption: Cryptography's holy grail.
+\newblock {\em ACM Crossroads}, 21(3):24--29, 2015.
 
 \end{thebibliography}

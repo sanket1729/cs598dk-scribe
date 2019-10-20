@@ -43,8 +43,9 @@ We provide a quick primer on the notation used in this section.
 \end{itemize}
 
 
-Before stepping into how to build LWE-based FHE schemes, let's briefly recap how to build a private and public encryption scheme with the LWE problem.
-Desisional LWE is the problem where given a matrix $A_{n,m}$, and a vector $b_m$, determining whether or not these are results vector of some instance of an LWE problem OR whether the vector $b_m$ was simply 
+Before stepping into how to build LWE-based FHE schemes, let's briefly recap how to build a private and public encryption scheme\cite{goldwasser1996lecture} with the LWE problem.
+Desisional LWE is the problem where given a matrix $A_{n,m}$, and a corresponding LWE vector result $b_m$, determining whether or not these 
+and results vector of some instance of an LWE problem OR whether the vector $b_m$ was simply 
 drawn from sampling values uniformly randomly from $Z^{m}_{q}$. 
 \begin{definition}
 \textbf{\textit{Decisional $LWE{n,m,q,\mathcal{X}}$}} : For all non-uniform probabilistic polynomial time adversary $\mathcal{A}$
@@ -56,7 +57,7 @@ $$|\underset{\substack{
 -\underset{\substack{\pmb{A}\leftarrow\mathbb{Z}_q^{n\times m}\\
 \pmb{b}\leftarrow\mathbb{Z}_q^m}}{Pr} 
 [\mathcal{A}(\pmb{A},\pmb{b})=1]|=negl(n)$$
-where $q$ is a prime within $O(2^n)$, $m=O(n\log q)$ and norm $\parallel \pmb{e}\parallel=\omega(\log n)$. Where $\omega(f(n))$ means that 
+where $q$ is a prime within $O(2^n)$, $m=O(n\log q)$\cite{regev2010learning} and norm $\parallel \pmb{e}\parallel=\omega(\log n)$. Where $\omega(f(n))$ means that 
 $e$ should be greater than $f(n)$ assymptotically.
 \end{definition}
 
@@ -106,7 +107,7 @@ We also recall that parameters $e$, $\pmb{e}$ in both of the schemes above are n
 
 Let us consider the scenario shown in \ref{com}. A client has a secret value of $x$. The client wants the server to do some computation on $x$ without revealing what $x$ is. To accomplish the following we do we follow the below protocol: First, a ciphertext $ct=Enc(x)$ is sent to the server along with the desired function $f$. The server then computes a new ciphertext $ct^*=Enc(f(x))$ by evaluating $x$ on another function $g$ which is publicly computable from $f$. After receiving $ct^*$ from the server, the client can use its secret key $sk$ to get the desired result of $f(x)$. Note that in the following example, the server learns the function $f$ so it is aware of what computation is taking place, but cannot figure the values underneath. 
 
-Fully Homomorphic Encryption refers to an extension of Encryption scheme with additional keywords \texttt{Fully} and \texttt{Homomorphic}.
+Fully Homomorphic Encryption\cite{wu2015fully} refers to an extension of Encryption scheme with additional keywords \texttt{Fully} and \texttt{Homomorphic}.
 \texttt{Homomorphic} in FHE refers to homomorphism in mathematics: the encryption and decryption functions can be thought of as homomorphisms between plaintext and ciphertext domains. \texttt{Fully} refers to the fact that we can evaluate any function. There is another variant called \texttt{Levelled} Homomorphic encryptions where we restrict ourselves to evaluating only functions with certain complexity(depth). 
 
 Even though the Fully Homomorphic encryption scheme is our actual goal, in practice we also consider a simplification leveled fully homomorphic encryption scheme. Leveled FHE does not allow us to compute arbitrary functions $f$ but only functions with a known depth $d$. Informally, when we already know what is the most complex(in terms of depth of the arithmetic circuit) and use that in the construction of our FHE scheme.
@@ -128,7 +129,7 @@ At a high level, given ciphertexts $ct_1,\dots,ct_n$ that encrypt $m_1,\dots,m_n
 
 Note that each function $f:\{0,1\}^n\rightarrow\{0,1\}^k$ can be split into $f_1,\dots,f_k$ where $\forall i$, $f_i:\{0,1\}^n\rightarrow\{0,1\}$ and also we can generalized the definition by regulating the input length of circuits in $\mathcal{C}$ from $n$ to $poly(n)$.
 
-
+In \cite{rothblum2011homomorphic}, they showed how to transform any additively homomorphic SKE into PKE. Since homomorphic SKE generically implies homomorphic PKE, without loss of generality, we only talk about how to build homomorphic PKE in this lecture.
 
 \begin{remark}
     In the Leveled homomorphic setting, it is possible to hide the function $f$ being evaluated under a Universal function evaluator. That is if we know the bound of the number of gates and depth of the circuits being evaluated, we can use the function $f$ as an argument to another universal function evaluator.

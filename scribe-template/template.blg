@@ -1,46 +1,49 @@
-This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+This is BibTeX, Version 0.99d (TeX Live 2017)
 Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: template.aux
 The style file: abbrv.bst
 Database file #1: template.bib
-You've used 1 entry,
+Warning--empty publisher in wiki
+Warning--empty year in wiki
+You've used 5 entries,
             2118 wiz_defined-function locations,
-            502 strings with 3779 characters,
-and the built_in function-call counts, 243 in all, are:
-= -- 21
-> -- 7
-< -- 0
-+ -- 3
-- -- 2
-* -- 12
-:= -- 48
-add.period$ -- 3
-call.type$ -- 1
-change.case$ -- 4
+            525 strings with 4234 characters,
+and the built_in function-call counts, 1438 in all, are:
+= -- 144
+> -- 41
+< -- 1
++ -- 18
+- -- 12
+* -- 84
+:= -- 240
+add.period$ -- 15
+call.type$ -- 5
+change.case$ -- 20
 chr.to.int$ -- 0
-cite$ -- 1
-duplicate$ -- 12
-empty$ -- 23
-format.name$ -- 2
-if$ -- 49
+cite$ -- 7
+duplicate$ -- 67
+empty$ -- 129
+format.name$ -- 12
+if$ -- 306
 int.to.chr$ -- 0
-int.to.str$ -- 1
-missing$ -- 2
-newline$ -- 8
-num.names$ -- 2
-pop$ -- 7
+int.to.str$ -- 5
+missing$ -- 6
+newline$ -- 27
+num.names$ -- 10
+pop$ -- 25
 preamble$ -- 1
-purify$ -- 3
+purify$ -- 16
 quote$ -- 0
-skip$ -- 6
+skip$ -- 46
 stack$ -- 0
-substring$ -- 5
-swap$ -- 1
-text.length$ -- 0
+substring$ -- 89
+swap$ -- 15
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 2
-warning$ -- 0
-while$ -- 2
-width$ -- 2
-write$ -- 13
+type$ -- 18
+warning$ -- 2
+while$ -- 16
+width$ -- 6
+write$ -- 54
+(There were 2 warnings)
