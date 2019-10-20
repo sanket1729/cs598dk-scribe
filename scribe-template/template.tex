@@ -119,80 +119,91 @@ At a high level, given ciphertexts $ct_1,\dots,ct_n$ that encrypt $m_1,\dots,m_n
 Note that each function $f:\{0,1\}^n\rightarrow\{0,1\}^k$ can be split into $f_1,\dots,f_k$ where $\forall i$, $f_i:\{0,1\}^n\rightarrow\{0,1\}$ and also we can generalized the definition by regulating the input length of circuits in $\mathcal{C}$ from $n$ to $poly(n)$.
 
 \section{Construction of Fully Homomorphic Encryption:}
-As described previousy, FHE is an ecryption scheme(Gen, Enc, Dec) 
-with an additional algorithm called Eval. In particular, we want to construct 
-such a Eval namely for two operations, Addition and Multiplication. Constructing 
+As described previously, FHE is an encryption scheme $(KeyGen, Enc, Dec)$ 
+with an additional algorithm called $Eval$. In particular, we want to construct 
+such a $Eval$ namely for two operations, Addition and Multiplication. Constructing 
 such a FHE scheme which must work for \textbf{all} functions $f$ might seem like daunting task, 
 but can use the following fact to ease our task.
 \begin{fact}
-It turns out that all functions can be expressed by arithematic circuits consisting
-of only addition and multiplication gates. Therefore, we only to implement our FHE operations for 
-addition and Multiplication. We can recursively compute every gate  in the Arthematic circuit 
+It turns out that all functions can be expressed by arithmetic circuits consisting
+of only addition and multiplication gates. Therefore, we only implement our FHE operations for 
+addition and Multiplication. We can recursively compute every gate  in the arithmetic circuit 
 homomorphically to get the output of the function. 
 \end{fact}
 
 \begin{definition}
-An arithmetic circuit over a field $Z_q$ is a directed
-acyclic graph whose vertices are called gates. Gates of incoming degree 0 are inputs to
+An arithmetic circuit over a field $\mathbb{Z}_q$ is a directed
+acyclic graph whose vertices are called gates. Gates of incoming degree $0$ are inputs to
 the circuit. All other gates are labelled $+$ or $x$. 
 \end{definition}
-We usually consider Arithematic circuits of fan-in 2 circuits, in which 
-case all of the + and × gates have in-degree 2.
+We usually consider arithmetic circuits with fan-in $2$, in which 
+case all of the $+$ and $x$ gates have in-degree $2$.
 
 \begin{remark}
 Even though Fully Homomorphic encryption scheme is our actual goal, in practice we also consider 
 a simplification leveled fully homomorphic encryption scheme. Leveled FHE does not allow us to 
-compute aribritary functions $f$ but only functions with apriory known depth $d$. Informally, when 
-we already know what is the most complex(in terms of depth of the arithematic circuit) and use that 
-in the construction of our FHE
+compute arbitrary functions $f$ but only functions with a priori known depth $d$. Informally, when 
+we already know what is the most complex(in terms of depth of the arithmetic circuit) and use that 
+in the construction of our FHE scheme.
 \end{remark}
 
-Let us try to the simplest possible way to build a FHE for the addition operation. 
+Let us start with the simplest possible way to build a FHE for the addition operation. 
 For simplicity, let us consider that we want to single bit numbers 
 and output a single bit number. This is equivalent to implementing the XOR operation. 
 
-\section{FHE: Addition operation}
+\section{FHE: Addition Operation}
 
-	Consider a encryption of message $\mu_1$ under the public key ($s^{T}A + e^{T}$, $A$). We call 
-$s^{T}A + e^{T}$ as $b$. One intuitive naive way to implementing addition might be addition of 
+Consider an encryption of message $\mu_1$ under the public key ($\pmb{s}^{T}\pmb{A} + \pmb{e}^{T}, \pmb{A}$). We call 
+$\pmb{s}^{T}\pmb{A} + \pmb{e}^{T}$ as $\pmb{b}$. One intuitive naive way to implementing addition might be addition of 
 ciphertexts
 
-$$c_1 = ( Ar_1, br_1 + \mu_1\floor{\frac{q}{2}} )$$
-$$c_1 = ( Ar_2, br_2 + \mu_2\floor{\frac{q}{2}} )$$
-$$c_{add} = c_1 + c_2 = ( A(r_1 + r_2), b(r_1 +r_2) + (\mu_1 + \mu_2)\floor{\frac{q}{2}} )$$
+$$c_1 = ( \pmb{Ar_1}, \pmb{br_1} + \mu_1\floor{\frac{q}{2}} )$$
+$$c_2 = ( \pmb{Ar_2}, \pmb{br_2} + \mu_2\floor{\frac{q}{2}} )$$
+$$c_{add} = c_1 + c_2 = ( \pmb{A}(\pmb{r_1} + \pmb{r_2}), \pmb{b}(\pmb{r_1} +\pmb{r_2}) + (\mu_1 + \mu_2)\floor{\frac{q}{2}} )$$
 
 It is possible to extend this to multi-bit XOR outputs by simply repeating 
 the circuit multiple times. However, it would only help in computing XOR for two $k$ bit numbers. 
 Let us try to decrypt the ciphertext $c_{add}$ and check what it decrypts to:
 
-% Copy the decryption equation here.
+\begin{align*}
+Dec(sk,c_{add})
+&= \pmb{b}(\pmb{r_1} +\pmb{r_2}) + (\mu_1 + \mu_2)\floor{\frac{q}{2}}-\pmb{s}^T\pmb{A}(\pmb{r_1} + \pmb{r_2})\\
+&=(\pmb{s}^{T}\pmb{A} + \pmb{e}^{T})(\pmb{r_1} +\pmb{r_2}) + (\mu_1 + \mu_2)\floor{\frac{q}{2}}-\pmb{s}^T\pmb{A}(\pmb{r_1} + \pmb{r_2})\\
+&=\pmb{e}^{T}(\pmb{r_1} +\pmb{r_2}) + (\mu_1 + \mu_2)\floor{\frac{q}{2}}
+\end{align*}
 
 
 So applying the decryption algorithm we get $\mu_1$ + $\mu_2$ given the total error
-is small ($|e_1 +e_2| \leq q/4$). The important observation to note here is to perform addition on 
+is small $e_1 +e_2 \leq q/4$ where $e_i=\parallel\pmb{e}^{T}\pmb{r_i}\parallel$). The important observation to note here is to perform addition on 
 two ciphertexts we need to assume hardness of LWE for stronger security parameters. 
 Therefore, if we want to perform $l$ addition operations, we would have to keep our $max(e_i) \leq \floor{\frac{q}{2}}/l$.   
 
-\begin{corollary}
-To compute addition of $k$ bit numbers $\mu_1$ and $\mu_2$ we must change our 
-encryption scheme to the where the factor which is multiplied to the plaintext should be $\frac{q}{2^(k+1)}$. 
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{error.pdf}
+\end{center}
+\caption{Decryption Error}
+\label{error}
+\end{figure}
 
-$$c_1 = ( Ar_1, br_1 + \mu_1\floor{\frac{q}{2^{k+1}}} )$$
-$$c_1 = ( Ar_2, br_2 + \mu_2\floor{\frac{q}{2^{k+1}}} )$$
-$$c_{add} = c_1 + c_2 = ( A(r_1 + r_2), b(r_1 +r_2) + (\mu_1 + \mu_2)\floor{\frac{q}{2^{k+1}}} )$$
+\begin{corollary}
+To compute addition of $k$ bit numbers $\mu_1$ and $\mu_2$, we must modify the encryption scheme by changing the factor which is multiplied with the plaintext from $\frac{q}{2}$ to $\frac{q}{2^{k+1}}$.
+
+$$c_1 = ( \pmb{Ar_1}, \pmb{br_1} + \mu_1\floor{\frac{q}{2^{k+1}}} )$$
+$$c_2 = ( \pmb{Ar_2}, \pmb{br_2} + \mu_2\floor{\frac{q}{2^{k+1}}} )$$
+$$c_{add} = c_1 + c_2 = ( \pmb{A}(\pmb{r_1} + \pmb{r_2}), \pmb{b}(\pmb{r_1} +\pmb{r_2}) + (\mu_1 + \mu_2)\floor{\frac{q}{2^{k+1}}} )$$
 
 On the basis of the similar argument described above, the error of the equations for 1 addition be 
 constrained by $e_i \leq \frac{q}{2^{k+1}}$.
 \end{corollary}
 \begin{remark}
-It is also possible to implement a similar addition for the private key ecryption part scheme 
+It is also possible to implement a similar addition for the private key encryption  scheme 
 using LWE. That is, adding two ciphertexts $c_1$ and $c_2$ corresponding to $\mu_1$ and $\mu_2$
 would also result in encryption of message $\mu_1 + \mu_2$.
 \end{remark}
 
 \begin{remark}
-A natural question which arises from the above discussion is about the similarility XOR operation 
-and addition operations.   
+A natural question which arises from the above discussion is about the similarity between XOR and addition operations.   
 \end{remark}
 
 \section{Towards FHE multiplication}
