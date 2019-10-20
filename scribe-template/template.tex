@@ -155,7 +155,7 @@ acyclic graph whose vertices are called gates. Gates of incoming degree $0$ are 
 the circuit. All other gates are labelled $+$ or $x$. 
 \end{definition}
 We usually consider arithmetic circuits with fan-in $2$, in which 
-case all of the $+$ and $x$ gates have in-degree $2$.
+case all of the $+$ and $\times$ gates have in-degree $2$.
 
 Let us start with the simplest possible way to build a FHE for the addition operation. 
 For simplicity, let us consider that we want to single bit numbers 
@@ -163,9 +163,16 @@ and output a single bit number. This is equivalent to implementing the XOR opera
 
 \section{FHE: Addition Operation}
 
+\begin{remark}
+	It is important to know that the symbols $+$ is being used interchangbly with $\oplus$. When we are saying addition, we actaully XORing the messages. We maintain this notion to be consistent with the literature in FHE.
+\end{remark}
+
 Consider an encryption of message $\mu_1$ under the public key ($\pmb{s}^{T}\pmb{A} + \pmb{e}^{T}, \pmb{A}$). We call 
-$\pmb{s}^{T}\pmb{A} + \pmb{e}^{T}$ as $\pmb{b}$. One intuitive naive way to implementing addition might be addition of 
-ciphertexts
+$\pmb{s}^{T}\pmb{A} + \pmb{e}^{T}$ as $\pmb{b}$. One intuitive naive way to implementing addition might be addition of ciphertexts.
+
+\begin{claim}
+	$c_1 + c_2$ is an encryption of $\mu_1 + \mu_2$
+\end{claim}
 
 $$c_1 = ( \pmb{Ar_1}, \pmb{br_1} + \mu_1\floor{\frac{q}{2}} )$$
 $$c_2 = ( \pmb{Ar_2}, \pmb{br_2} + \mu_2\floor{\frac{q}{2}} )$$
@@ -197,7 +204,7 @@ Therefore, if we want to perform $l$ addition operations, we would have to keep 
 \end{figure}
 
 \begin{corollary}
-To compute addition(instead of XOR)of $k$ bit numbers $\mu_1$ and $\mu_2$, we must modify the encryption scheme by changing the factor which is multiplied with the plaintext from $\frac{q}{2}$ to $\frac{q}{2^{k+1}}$.
+To compute addition $ + $(instead of XOR $\oplus$) of $k$ bit numbers $\mu_1$ and $\mu_2$, we must modify the encryption scheme by changing the factor which is multiplied with the plaintext from $\frac{q}{2}$ to $\frac{q}{2^{k+1}}$.
 
 $$c_1 = ( \pmb{Ar_1}, \pmb{br_1} + \mu_1\floor{\frac{q}{2^{k+1}}} )$$
 $$c_2 = ( \pmb{Ar_2}, \pmb{br_2} + \mu_2\floor{\frac{q}{2^{k+1}}} )$$
@@ -213,71 +220,18 @@ would also result in encryption of message $\mu_1 + \mu_2$.
 \end{remark}
 
 \section{Towards FHE multiplication:}
-Let us try to apply to 
-\begin{theorem}
-Statement here 
-\end{theorem}
+Let us try to apply the similar logic for multiplying two ciphertexts. The components of the vectors and dimentions do not check out, but we plan to investigate what happens when we try to directly multiply the cipertexts. By multiplication of ciphertexts, we mean component-wise multiplication of the ciphertext tuple. 
 
-\begin{lemma}
-Statement here
-\end{lemma}
+$$c_1 = ( \pmb{Ar_1}, \pmb{br_1} + \mu_1\floor{\frac{q}{2}} )$$
+$$c_2 = ( \pmb{Ar_2}, \pmb{br_2} + \mu_2\floor{\frac{q}{2}} )$$
+$$c_{mult} = c_1 * c_2 = ( \pmb{A}\pmb{r_1} * A \pmb{r_2}, \pmb{b}\pmb{r_1} *\pmb{b}\pmb{r_2} + (\mu_1 * \mu_2)\floor{\frac{q}{2}}\floor{\frac{q}{2}} + \pmb{br_1}\mu_2\floor{\frac{q}{2}} + \pmb{br_2}\mu_1\floor{\frac{q}{2}} )$$
 
-\begin{corollary}
-Statement here
-\end{corollary}
-
-\begin{proposition}
-Statement here
-\end{proposition}
-
-\begin{fact}
-Statement here
-\end{fact}
-
-\begin{claim}
-Statement here
-\end{claim}
-
-\begin{definition}
-Statement here
-\end{definition}
-
-\begin{example}
-Statement here
-\end{example}
-
-\begin{assumption}
-Statement here
-\end{assumption}
-
-\begin{remark}
-Statement here
-\end{remark}
-
-\begin{conjecture}
-Statement here
-\end{conjecture}
-
-\begin{openproblem}
-Statement here
-\end{openproblem}
+We ask to reader to look over the fact that the dimensions in this system of equations do not. We are trying to investigate the possible problems to motivate to a possible solution.
 
 \begin{problem}
-Statement here
+	Applying the decryption step does not result in something clean which can be easily decrypted directly.
 \end{problem}
-
-
-\noindent
-\begin{align}
-a = a_1+a_2+\cdots+a_n.
-\end{align}
-\noindent
-For proofs, use the provided {\tt proof} environment,
-illustrated below.
-
-\begin{proof}
-Proof goes here.
-\end{proof}
+Intuitively, we can see that the problem is there because decrypting the first term does not get rid of the noise directly. We are going investigate this problem deeply into the next lecture, but the high level idea is to tranform a ciphertext $c_2$ with an operation $G^{-1}(c_2)$ before multiplying it with $c_1$. This transformation must ensure that the values of $G^{-1}(c_2)$ are small so that the error is contained, but also must preserve the correctnes of the scheme.
 
 \section*{Acknowledgement}
 These scribe notes were prepared by editing a light modification of the template designed by Alexander Sherstov.
