@@ -35,6 +35,14 @@ LWE is the only way we know to do an fully homomorphic encryption as of Oct 2019
            
 \section{Recap}
 
+We provide a quick primer on the notation used in this section. 
+\begin{itemize}
+	\item All values which are bolded like $\pmb{s}, \pmb{a}$ are vectors where bolded $\pmb{A}$ is a matrix.
+	\item All values which in simple like $q, e$ are scalars. All scalars apart from field modulas $q$ are in field $Z_q$.
+	\item The values $\pmb{a}, \pmb{A}$ are public value seen by all parties, \pmb{s} is secret value and $e$, $\pmb{e}$ are errors
+\end{itemize}
+
+
 Before stepping into how to build LWE-based FHE schemes, let's briefly recap how to build private and public encryption scheme with LWE problem.
 Desisional LWE is the problem where given a matrix $A_{n,m}$, and a corresponding LWE vector result $b_m$, determining whether or not these 
 and results vector of some instance of an LWE problem OR whether the vector $b_m$ was simply 
@@ -53,7 +61,8 @@ where $q$ is a prime within $O(2^n)$, $m=O(n\log q)$ and norm $\parallel \pmb{e}
 $e$ should be greater than $f(n)$ assymptotically.
 \end{definition}
 
-Next we revise the secret key encryption (SKE) built with LWE which has $m=1$:
+
+Next we revise the secret key encryption (SKE) built with LWE which has $m=1$ and secret key $\pmb{s}$. We refer to previous lecture for definition of SKE and only give an instiation of one using LWE.
 
 $$KeyGen(1^n): \pmb{s}\leftarrow\mathbb{Z}_q^n$$
 $$\underset{\substack{
@@ -64,28 +73,30 @@ $$\underset{\substack{
 
 $$Dec(\pmb{s},\pmb{a},b): b-\langle\pmb{s}^T,\pmb{a}\rangle=(e+\mu\lfloor\frac{q}{2}\rfloor) \mod q =   
   \begin{cases}
-    0 & \text{if $b - \pmb{s}^T\pmb{a}$} mod q \in [\frac{-q}{4} \frac{q}{4} ] \\% - \pmb{s}^T\pmb{a} mod q  \[\floor{-q}{4} \floor{q}{4}\]$} \\
-    1 & \text{if $b - \pmb{s}^T\pmb{a}$} mod q \in [\frac{q}{4} \frac{3q}{4} ]%  \[\floor{q}{4} \floor{3*q}{4}\]$}
+    0 & \text{if $b - \pmb{s}^T\pmb{a}$ mod q}  \in [\frac{-q}{4} \frac{q}{4} ] \\% - \pmb{s}^T\pmb{a} mod q  \[\floor{-q}{4} \floor{q}{4}\]$} \\
+    1 & \text{if $b - \pmb{s}^T\pmb{a}$ mod q}  \in [\frac{q}{4} \frac{3q}{4} ]%  \[\floor{q}{4} \floor{3*q}{4}\]$}
   \end{cases}$$
   
 
-LWE can also be used to build public key encryption (PKE):
-\begin{itemize}
-\item \item $KeyGen(1^n): (sk=\pmb{s},pk=(\pmb{A}, \pmb{b}^T=\pmb{s}^T\pmb{A}+\pmb{e}^T))$
-\begin{itemize}
-\item[*]  $\pmb{s}\leftarrow\mathbb{Z}_q^n$
-\item[*] $\pmb{A}\leftarrow\mathbb{Z}_q^{n\times m}$
-\item[*] $\pmb{e}\leftarrow\mathcal{X}^m$
-\end{itemize}
+LWE can also be used to build public key encryption(PKE) with public key $pk = (\pmb{A}, \pmb{b}^T=\pmb{s}^T\pmb{A}+\pmb{e}^T))$ and secret key $sk$. Just as before, interested reader can look at the definition of PKE in  and here we only an instantiation of the scheme using LWE.
+$$\underset{\substack{
+\pmb{A}\leftarrow\mathbb{Z}_q^{n\times m}\\
+\pmb{a}\leftarrow\mathbb{Z}_q^{n\times 1}\\
+\pmb{e}\leftarrow\mathcal{X}^m}}{KeyGen}(1^n): (sk=\pmb{s},pk=(\pmb{A}, \pmb{b}^T=\pmb{s}^T\pmb{A}+\pmb{e}^T))$$
 
-\item $Enc(pk,\mu\in\{0,1\}): (\pmb{c_1}=\pmb{A}\pmb{r}, c_2=(\pmb{b}^T\pmb{r}+\mu\lfloor\frac{q}{2}\rfloor)\mod q)$
-\begin{itemize}
-\item[*]  $\pmb{r}\longleftarrow\{0,1\}^m$
-\end{itemize}
 
-\item $Dec(sk,(\pmb{c_1},c_2)): c_2-\pmb{s}^T\pmb{c_1}=\pmb{e}^T\pmb{r}+\mu\lfloor\frac{q}{2}\rfloor$
-\end{itemize}
+$$\underset{\substack{
+\pmb{r}\leftarrow\{0,1\}^m\\}}{Enc}(pk = (\pmb{A}, \pmb{b}^T) ,\mu\in\{0,1\}): (\pmb{c_1}=\pmb{A}\pmb{r}, c_2=(\pmb{b}^T\pmb{r}+\mu\lfloor\frac{q}{2}\rfloor)\mod q)$$
 
+$$Dec(sk=\pmb{s},(\pmb{c_1},c_2)): c_2-\pmb{s}^T\pmb{c_1}=\pmb{e}^T\pmb{r}+\mu\lfloor\frac{q}{2}\rfloor \mod q =  \begin{cases}
+    0 & \text{if $c_2-\pmb{s}^T\pmb{c_1}$ mod q}  \in [\frac{-q}{4} \frac{q}{4} ] \\% - \pmb{s}^T\pmb{a} mod q  \[\floor{-q}{4} \floor{q}{4}\]$} \\
+    1 & \text{if $c_2-\pmb{s}^T\pmb{c_1}$ mod q}  \in [\frac{q}{4} \frac{3q}{4} ]%  \[\floor{q}{4} \floor{3*q}{4}\]$}
+  \end{cases}$$
+	
+
+\begin{remark}
+We also recall that parameters $e$, $\pmb{e}$ in both of the schemes above are niether in the public key nor in the secret key! That is neither the Encryption algorithms or the Decryption algorithms use it. But, it is also important for the security of the above schemes that errors are not known to other parties even though it is not a part of secret key.
+\end{remark}
 
 \section{Fully Homomorphic Encryption (FHE)}
 
