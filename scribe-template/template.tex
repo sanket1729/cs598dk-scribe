@@ -93,16 +93,24 @@ $$Dec(sk=\pmb{s},(\pmb{c_1},c_2)): c_2-\pmb{s}^T\pmb{c_1}=\pmb{e}^T\pmb{r}+\mu\l
     1 & \text{if $c_2-\pmb{s}^T\pmb{c_1}$ mod q}  \in [\frac{q}{4} \frac{3q}{4} ]%  \[\floor{q}{4} \floor{3*q}{4}\]$}
   \end{cases}$$
 	
+\begin{remark}
+Generally, we want the noise $\pmb{e}$ introduced to the equations are sampled from a distribution with zero mean and low standard variation. For the correctness of the encryption scheme, we will require that the noise distribution makes noise bound $\parallel e\parallel\leq q/4$ with high probability. As shown in above decryption scheme, if the norm of noises is bounded by $q/4$, the boundary between the case $\mu=1$ and $\mu=0$ is very clear and the probability that decryption algorithm giving the wrong plaintext is very slow. In practice, $\mathcal{X}$ is usually a discrete Gaussian distribution over $\mathbb{Z}_q$. With Gaussian distribution that has mean $\mu=0$ and standard variation $\sigma$ to be very small, according to its probability density function:
+$$f(x)=\frac{1}{\sqrt{2\pi\sigma}}e^{-\frac{x^2}{2\sigma^2}}$$
+we can get that the error bound go beyond $q/4$ is negligible when $\sigma\ll q/4$.
+\end{remark}
 
 \begin{remark}
 We also recall that parameters $e$, $\pmb{e}$ in both of the schemes above are niether in the public key nor in the secret key! That is neither the Encryption algorithms or the Decryption algorithms use it. But, it is also important for the security of the above schemes that errors are not known to other parties even though it is not a part of secret key.
 \end{remark}
 
 \section{Fully Homomorphic Encryption (FHE)}
+
+Let us consider the scenario shown in \ref{com}. A client has a secret value $x$. The client wants the server do some computation on $x$ without revealing what $x$ is. Firstly, a ciphertext $ct=Enc(x)$ is sent to the server along with the desired function $f$. Then the server could compute a new ciphertext $ct^*=Enc(f(x))$ by evaluating $x$ on another function $g$ which is publicly computable from $f$. After receiving $ct^*$ from the server, the client can use its secret key $sk$ to get the desired result of $f(x)$. Note that in the following example, the server learns the function $f$ so it is aware of what computation is taking place, but cannot figure the values underneath. 
+
 Fully Homomorphic Encryption refers to an extension of Encryption scheme with additional keywords \texttt{Fully} and \texttt{Homomorphic}.
 \texttt{Homomorphic} in FHE refers to homomorphism in mathematics: the encryption and decryption functions can be thought of as homomorphisms between plaintext and ciphertext domains. \texttt{Fully} refers to the fact that we can evalute any function. There is another variant called \texttt{Levelled} Homomorphic encryptions where we restrict ourselves to evaluating only functions with certain complexity(depth). 
 
-Let us consider the scenario shown in \ref{com}. A client has a secret value $x$. The client wants the server do some computation on $x$ without revealing what $x$ is. Firstly, a ciphertext $ct=Enc(x)$ is sent to the server along with the desired function $f$. Then the server could compute a new ciphertext $ct^*=Enc(f(x))$ by evaluating $x$ on another function $g$ which is publicly computable from $f$. After receiving $ct^*$ from the server, the client can use its secret key $sk$ to get the desired result of $f(x)$. Note that in the following example, the server learns the function $f$ so it is aware of what computation is taking place, but cannot figure the values underneath. 
+Even though Fully Homomorphic encryption scheme is our actual goal, in practice we also consider a simplification leveled fully homomorphic encryption scheme. Leveled FHE does not allow us to compute arbitrary functions $f$ but only functions with a priori known depth $d$. Informally, when we already know what is the most complex(in terms of depth of the arithmetic circuit) and use that in the construction of our FHE scheme.
 
 
 \begin{figure}[!htbp]
@@ -121,15 +129,17 @@ At a high level, given ciphertexts $ct_1,\dots,ct_n$ that encrypt $m_1,\dots,m_n
 
 Note that each function $f:\{0,1\}^n\rightarrow\{0,1\}^k$ can be split into $f_1,\dots,f_k$ where $\forall i$, $f_i:\{0,1\}^n\rightarrow\{0,1\}$ and also we can generalized the definition by regulating the input length of circuits in $\mathcal{C}$ from $n$ to $poly(n)$.
 
+
+
 \begin{remark}
 	In the Leveled homomorphic setting, it is possible to hide the function $f$ being evaluated under a Universal function evalutor. That is if we know the bound of the number of gates and depth of the circuits being evaluted, we can use the function $f$ as a argument to another universal function evaluator.
 	$$Eval(U, f, args) = f(args)$$
-\end{end}
+\end{remark}
 
 \section{Construction of Fully Homomorphic Encryption:}
-As described previously, FHE is an encryption scheme $(KeyGen, Enc, Dec)$ 
-with an additional algorithm called $Eval$. In particular, we want to construct 
-such a $Eval$ namely for two operations, Addition and Multiplication. Constructing 
+As described previously, FHE is an encryption scheme \texttt{(KeyGen, Enc, Dec)} 
+with an additional algorithm called \texttt{Eval}. In particular, we want to construct 
+such a \texttt{Eval} namely for two operations, Addition and Multiplication. Constructing 
 such a FHE scheme which must work for \textbf{all} functions $f$ might seem like daunting task, 
 but can use the following fact to ease our task.
 \begin{fact}
@@ -146,14 +156,6 @@ the circuit. All other gates are labelled $+$ or $x$.
 \end{definition}
 We usually consider arithmetic circuits with fan-in $2$, in which 
 case all of the $+$ and $x$ gates have in-degree $2$.
-
-\begin{remark}
-Even though Fully Homomorphic encryption scheme is our actual goal, in practice we also consider 
-a simplification leveled fully homomorphic encryption scheme. Leveled FHE does not allow us to 
-compute arbitrary functions $f$ but only functions with a priori known depth $d$. Informally, when 
-we already know what is the most complex(in terms of depth of the arithmetic circuit) and use that 
-in the construction of our FHE scheme.
-\end{remark}
 
 Let us start with the simplest possible way to build a FHE for the addition operation. 
 For simplicity, let us consider that we want to single bit numbers 
@@ -182,9 +184,9 @@ Dec(sk,c_{add})
 
 
 So applying the decryption algorithm we get $\mu_1$ + $\mu_2$ given the total error
-is small $e_1 +e_2 \leq q/4$ where $e_i=\parallel\pmb{e}^{T}\pmb{r_i}\parallel$). The important observation to note here is to perform addition on 
+is small $|e_1 +e_2| \leq q/4$ where $e_i=\parallel\pmb{e}^{T}\pmb{r_i}\parallel$). The important observation to note here is to perform addition on 
 two ciphertexts we need to assume hardness of LWE for stronger security parameters. 
-Therefore, if we want to perform $l$ addition operations, we would have to keep our $max(e_i) \leq \floor{\frac{q}{2}}/l$.   
+Therefore, if we want to perform $l$ addition operations, we would have to keep our $\parallel\pmb{e}^{T}\pmb{r_i}\parallel) \leq \floor{\frac{q}{2}}/l$. The image shows the decryption algorithm works. With a very high probability an decryption of an Encryption of $0$ would be in the blue color zone and the dercyption of Encryption of $1$ will be in the orange zone.
 
 \begin{figure}[!htbp]
 \begin{center}
@@ -195,7 +197,7 @@ Therefore, if we want to perform $l$ addition operations, we would have to keep 
 \end{figure}
 
 \begin{corollary}
-To compute addition of $k$ bit numbers $\mu_1$ and $\mu_2$, we must modify the encryption scheme by changing the factor which is multiplied with the plaintext from $\frac{q}{2}$ to $\frac{q}{2^{k+1}}$.
+To compute addition(instead of XOR)of $k$ bit numbers $\mu_1$ and $\mu_2$, we must modify the encryption scheme by changing the factor which is multiplied with the plaintext from $\frac{q}{2}$ to $\frac{q}{2^{k+1}}$.
 
 $$c_1 = ( \pmb{Ar_1}, \pmb{br_1} + \mu_1\floor{\frac{q}{2^{k+1}}} )$$
 $$c_2 = ( \pmb{Ar_2}, \pmb{br_2} + \mu_2\floor{\frac{q}{2^{k+1}}} )$$
@@ -210,12 +212,8 @@ using LWE. That is, adding two ciphertexts $c_1$ and $c_2$ corresponding to $\mu
 would also result in encryption of message $\mu_1 + \mu_2$.
 \end{remark}
 
-\begin{remark}
-A natural question which arises from the above discussion is about the similarity between XOR and addition operations.   
-\end{remark}
-
-\section{Towards FHE multiplication}
-
+\section{Towards FHE multiplication:}
+Let us try to apply to 
 \begin{theorem}
 Statement here 
 \end{theorem}
